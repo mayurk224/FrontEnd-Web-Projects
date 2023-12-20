@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Covid</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="container">
+    <form action="" style="padding-left: 30%; padding-right: 30%; margin-top: 10%">
+      <div class="form-group">
+        <label>Select State</label>
+        <select id="stat" class="form-control">
+
+
+
+        </select>
+
+
+      </div>
+
+      <div class="form-group">
+        <label>Select District</label>
+        <select id="dist" class="form-control">
+
+
+
+        </select>
+
+
+      </div>
+
+      <div class="form-group">
+        <label>Notes</label>
+        <textarea class="form-control" id="notes" disabled></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Active</label>
+        <textarea class="form-control" id="active" disabled></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Confirmed</label>
+        <textarea class="form-control" id="confirmed" disabled></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Migrated Other</label>
+        <textarea class="form-control" id="migratedother" disabled></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Deceased</label>
+        <textarea class="form-control" id="deceased" disabled></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>recovered</label>
+        <textarea class="form-control" id="recovered" disabled></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Delta Confirmed</label>
+        <textarea class="form-control" id="deltaconfirmed" disabled></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Delta Deceased</label>
+        <textarea class="form-control" id="deltadeceased" disabled></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Delta Recovered</label>
+        <textarea class="form-control" id="deltarecovered" disabled></textarea>
+      </div>
+
+    </form>
+
+  </div>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+
+  <!-- jquery cdn -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</body>
+<script>
+  $(document).ready(function () {
+    var covidData; // Store the data globally
+
+    // Make a single AJAX request
+    $.get("https://data.covid19india.org/v2/state_district_wise.json", function (data, status) {
+      covidData = data;
+
+      var states = $("#stat");
+      states.empty();
+
+      for (var i = 0; i < data.length; i++) {
+        var option = $("<option>" + data[i].state + "</option>");
+        states.append(option);
+      }
+    });
+
+    $("#stat").change(function () {
+      var state = $("#stat").val();
+      var districts = $("#dist");
+
+      districts.empty();
+
+      for (var i = 0; i < covidData.length; i++) {
+        if (state == covidData[i].state) {
+          for (var j = 0; j < covidData[i].districtData.length; j++) {
+            var districtOption = $("<option>" + covidData[i].districtData[j].district + "</option>");
+            districts.append(districtOption);
+          }
+        }
+      }
+    });
+
+    $("#dist").change(function () {
+      var state = $("#stat").val();
+      var district = $("#dist").val();
+
+      for (var i = 0; i < covidData.length; i++) {
+        if (state == covidData[i].state) {
+          for (var j = 0; j < covidData[i].districtData.length; j++) {
+            if (district == covidData[i].districtData[j].district) {
+              var districtData = covidData[i].districtData[j];
+
+              // Set values for various elements
+              $("#notes").val(districtData.notes);
+              $("#active").val(districtData.active);
+              $("#confirmed").val(districtData.confirmed);
+              $("#migratedother").val(districtData.migratedother);
+              $("#deceased").val(districtData.deceased);
+              $("#recovered").val(districtData.recovered);
+              $("#deltaconfirmed").val(districtData.delta.confirmed);
+              $("#deltadeceased").val(districtData.delta.deceased);
+              $("#deltarecovered").val(districtData.delta.recovered);
+
+              break; // No need to continue iterating
+            }
+          }
+        }
+      }
+    });
+  });
+
+</script>
+
+</html>

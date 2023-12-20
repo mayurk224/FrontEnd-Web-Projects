@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="nav">
+            <div class="logo">
+                <h2>Notes App</h2>
+            </div>
+            <div class="searchbar">
+                <input type="search" oninput="searchNotes()" name="" id="searchInput" placeholder="Search ur Notes Here ...">
+            </div>
+            <div class="navbtns">
+                <div>
+                    <button data-theme-toggle>Light/Dark</button>
+                    <button onclick="openForm()">Add Note</button>
+                    <button onclick="openTrash()">Trash Bin</button>
+                </div>
+            </div>
+        </div>
+        <div class="bottom">
+            <div class="notearea">
+                <div class="notecontainer" id="notecontainer">
+                    
+                </div>
+            </div>
+            <div class="addnote">
+                <div id="openForm" class="sidenav">
+                    <a class="closebtn" onclick="closeForm()">&times;</a>
+                    <div class="noteform">
+                        <div class="formhead">
+                            <h2>Add Note</h2>
+                        </div>
+                        <div class="formbody">
+                            <div>
+                                <h4>Heading</h4>
+                                <textarea class="notehead" placeholder="Write ur note Heading here.." id="auto-resize-textarea" oninput="autoResize(this)" cols="30"></textarea>
+                            </div>
+                            <div>
+                                <h4>Note</h4>
+                                <textarea class="notetext" id="auto-resize-textarea" oninput="autoResize(this)" cols="30"></textarea>
+                            </div>
+                            <p class="err" id="err" style="display: none;"></p>
+                            <div class="formbtns">
+                                <button class="save" onclick="saveNote()">Save</button>
+                                <button class="close" onclick="closeForm()">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="trashbin">
+                <div id="openTrash" class="sidenav">
+                    <div class="trashcontainer">
+                        <a class="closebtn" onclick="closeTrash()">&times;</a>
+                        <h2>Deleted Notes</h2>
+                        <div class="trashnotes" id="trashnotes">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
